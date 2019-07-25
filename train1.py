@@ -22,7 +22,7 @@ BATCH_SIZE_2 = 6
 
 
 def _main():
-    annotation_path = 'train.txt'
+    annotation_path = 'kaggle_2019_train_60k_256x256.txt'
     log_dir = 'logs/001/'
     classes_path = 'model_data/openimgs_classes.txt'
     anchors_path = 'model_data/yolo_anchors.txt'
@@ -30,7 +30,8 @@ def _main():
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
 
-    input_shape = (416,416) # multiple of 32, hw
+    #input_shape = (416,416) # multiple of 32, hw
+    input_shape = (256, 256)
 
     if USE_DARKNET53:
         model = create_model(input_shape, anchors, num_classes,
