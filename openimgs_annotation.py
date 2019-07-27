@@ -48,23 +48,27 @@ def main():
     #                'x0': 0.760000, 'x1': 0.778125,
     #                'y0': 0.645892, 'y1': 0.673277}]
 
-    #with open('kaggle_2019_train_260k_256x256.txt', 'w') as f:
-    with open('kaggle_2019_train_60k_256x256.txt', 'w') as f:
+    with open('kaggle_2019_train_260k_256x256.txt', 'w') as f:
+    #with open('kaggle_2019_train_60k_256x256.txt', 'w') as f:
 
         def write_line(img_id, img_annos):
-            #img_path = 'open-image-dataset/train/{}.jpg'.format(img_id)
-            img_path = 'open-image-dataset/train_min/{}.jpg'.format(img_id)
+            img_path = 'open-image-dataset/train/{}.jpg'.format(img_id)
+            #img_path = 'open-image-dataset/train_min/{}.jpg'.format(img_id)
             img_path = os.path.abspath(img_path)
-
-            img = cv2.imread(img_path)
-            if img is None:
-                #print('{} is not found!!!'.format(img_path))
+            
+            if not os.path.isfile(img_path): 
                 return
-            h, w, c = img.shape
+
+            #img = cv2.imread(img_path)
+            #if img is None:
+                #print('{} is not found!!!'.format(img_path))
+            #    return
+            #h, w, c = img.shape
             #if h != 1024 and w != 1024:
             #if h < 416 or w < 416:
             #    print('{}.jpg is {}x{}!'.format(img_id, w, h))
-
+            h = 256
+            w = 256
             f.write(img_path)
             for aa in img_annos:
                 f.write(' {},{},{},{},{}'.format(

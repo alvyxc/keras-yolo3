@@ -11,7 +11,7 @@ test_dir = os.path.join (dir_path, "open-image-dataset/test")
 train_files = os.listdir(train_dir)
 number_of_train_file = len(train_files)
 
-copy_index = random.sample(range(number_of_train_file), number_of_train_file // 5)
+copy_index = random.sample(range(number_of_train_file), number_of_train_file // 10)
 
 for i in copy_index:
     shutil.move(os.path.join(train_dir, train_files[i]), test_dir)
