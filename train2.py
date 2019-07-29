@@ -18,14 +18,14 @@ from triangular3 import Triangular3Scheduler
 
 MIN_LR = 1e-9
 MAX_LR = 3e-4
-EPOCHS = 100
+EPOCHS = 3
 BATCH_SIZE = 6
 USE_SGDAccum = True
 ACCUM_ITERS = 8
 
 
 def _main():
-    annotation_path = 'train.txt'
+    annotation_path = 'kaggle_2019_train_60k_256x256.txt'
     log1_dir = 'logs/001/'
     log2_dir = 'logs/002/'
     classes_path = 'model_data/openimgs_classes.txt'
@@ -34,7 +34,7 @@ def _main():
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
 
-    input_shape = (416,416) # multiple of 32, hw
+    input_shape = (256,256) # multiple of 32, hw
 
     model = create_model(input_shape, anchors, num_classes,
             freeze_body=0, weights_path=log1_dir+'trained_weights_stage_2.h5')

@@ -15,8 +15,8 @@ from yolo3.utils import get_random_data
 
 
 USE_DARKNET53 = True
-STAGE1_EPOCHS = 1 
-STAGE2_EPOCHS = 2
+STAGE1_EPOCHS = 3
+STAGE2_EPOCHS = 6
 BATCH_SIZE_1 = 32
 BATCH_SIZE_2 = 6
 
@@ -29,21 +29,17 @@ def _main():
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
     anchors = get_anchors(anchors_path)
-    initial_model = 'logs/002/trained_weights_final.h5'
 
     #input_shape = (416,416) # multiple of 32, hw
     input_shape = (256, 256)
 
-    model = create_model(input_shape, anchors, num_classes,
-        freeze_body=2, weights_path=initial_model)
-
-    #if USE_DARKNET53:
-    #    model = create_model(input_shape, anchors, num_classes,
-    #        freeze_body=2, weights_path='model_data/darknet53_weights.h5')
-    #else:
-    #    # otherwise use the default yolov3 weights
-    #    model = create_model(input_shape, anchors, num_classes,
-    #        freeze_body=2, weights_path='model_data/yolo_weights.h5')
+    if USE_DARKNET53:
+        model = create_model(input_shape, anchors, num_classes,
+            freeze_body=2, weights_path='model_data/darknet53_weights.h5')
+    else:
+        # otherwise use the default yolov3 weights
+        model = create_model(input_shape, anchors, num_classes,
+            freeze_body=2, weights_path='model_data/yolo_weights.h5')
 
     logging = TensorBoard(log_dir=log_dir)
     checkpoint = ModelCheckpoint(log_dir + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
