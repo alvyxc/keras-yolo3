@@ -4,11 +4,24 @@
 
 ## Introduction
 
-This is a Keras implementation of YOLOv3 (Tensorflow backend), for tackling Kaggle 2018 [Google AI Open Images - Object Detection Track](https://www.kaggle.com/c/google-ai-open-images-object-detection-track) competition. I forked the code from [qqwweee/keras-yolo3](https://github.com/qqwweee/keras-yolo3) and made necessary modification for it to work for the Open Images dataset.
+This is a Keras implementation of YOLOv3 (Tensorflow backend). 
 
 ---
 
 ## Set up
+
+0. Setup yolov3 cpu and gpu env
+ 
+````bash
+Download and install anacoda: https://docs.anaconda.com/anaconda/install/linux/
+
+conda env create --file env-cpu.yml
+
+conda env create --file env-gpu.yml
+
+It is more efficient to train with gpu if you system have gpu. 
+
+````
 
 1. Download the original pre-trained Darknet weights for YOLOv3, and convert it to Keras format.
 
@@ -17,16 +30,16 @@ This is a Keras implementation of YOLOv3 (Tensorflow backend), for tackling Kagg
    $ python3 convert.py -w darknet53.cfg darknet53.weights model_data/darknet53_weights.h5
    ```
 
-2. Prepare the Open Images dataset for training. Reference: (a) [the Kaggle competition page](https://www.kaggle.com/c/google-ai-open-images-object-detection-track/data), (b) [Overview of the Open Images Challenge 2018](https://storage.googleapis.com/openimages/web/challenge.html)
+2. Prepare the Open Images dataset for training. Reference: 
 
-   After downloading all necessary files, put the dataset into a directory structure like the following. Note that all jpg images for training (and validation) should be located in the `train/` folder. The annotation files such as `challenge-2018-class-descriptions-500.csv` and `challenge-2018-train-annotations-bbox.csv` should be found in the `kaggle-2018-object-detection` folder. And the test jpg images should be in the `kaggle-2018-object-detection/test_challenge_2018` folder.
+   After downloading all necessary files, put the dataset into a directory structure like the following. Note that all jpg images for training (and validation) should be located in the `train/` folder. The annotation files such as `challenge-2019-class-descriptions-500.csv` and `challenge-2019-train-annotations-bbox.csv` should be found in the `kaggle-2019-object-detection` folder. And the test jpg images should be in the `kaggle-2019-object-detection/test_challenge_2019` folder.
 
    ```shell
    $ tree -d ~/data/open-images-dataset
    /home/user/data/open-images-dataset
-   ├── kaggle-2018-object-detection
-   │   └── test_challenge_2018
-   ├── kaggle-2018-visual-relationships
+   ├── kaggle-2019-object-detection
+   │   └── test_challenge_2019
+   ├── kaggle-2019-visual-relationships
    ├── test
    ├── train
    └── valid
