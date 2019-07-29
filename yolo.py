@@ -24,10 +24,10 @@ class YOLO(object):
         "anchors_path": 'model_data/yolo_anchors.txt',
         "classes_path": 'model_data/openimgs_classes.txt',
         "codes_path": 'model_data/openimgs_codes.txt',
-        #"score" : 0.3,
-        "score" : 0.001,
+        "score" : 0.20,
+        #"score" : 0.001,
         "iou" : 0.45,
-        "model_image_size" : (416, 416),
+        "model_image_size" : (256, 256),
         "gpu_num" : 1,
     }
 
@@ -39,6 +39,7 @@ class YOLO(object):
             return "Unrecognized attribute name '" + n + "'"
 
     def __init__(self, **kwargs):
+        self._defaults["model_path"] = kwargs["model"]
         self.__dict__.update(self._defaults) # set up default values
         self.__dict__.update(kwargs) # and update with user overrides
         self.class_names = self._get_class()
@@ -79,9 +80,9 @@ class YOLO(object):
         is_tiny_version = num_anchors==6 # default setting
         try:
             self.yolo_model = load_model(model_path, compile=False)
+            print(self.yolo_model.metrics)
         except:
             self.yolo_model = yolo_body(Input(shape=(None,None,3)), num_anchors//3, num_classes)
-            ### print(self.yolo_model.summary())
             self.yolo_model.load_weights(self.model_path) # make sure model, anchors and classes match
         else:
             assert self.yolo_model.layers[-1].output_shape[-1] == \
@@ -89,6 +90,7 @@ class YOLO(object):
                 'Mismatch between model and given anchor and class sizes'
 
         print('{} model, anchors, and classes loaded.'.format(model_path))
+        print(self.yolo_model.summary())
 
         # Generate colors for drawing bounding boxes.
         hsv_tuples = [(x / len(self.class_names), 1., 1.)

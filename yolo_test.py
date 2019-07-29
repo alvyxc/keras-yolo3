@@ -6,7 +6,8 @@ from PIL import Image
 
 
 FLAGS = None
-TEST_DIR = 'open-images-dataset/kaggle-2018-object-detection/test_challenge_2018'
+#TEST_DIR = 'open-image-dataset/kaggle-2019-object-detection/test_challenge_2019'
+TEST_DIR = 'open-image-dataset/test'
 OUTPUT_CSV = 'submit/output.csv'
 
 
@@ -52,7 +53,6 @@ def submit_test_imgs(yolo):
     with open(OUTPUT_CSV, 'w') as f:
         f.write('ImageId,PredictionString\n')
         for jpg in jpgs:
-            print(jpg)
             img_path = os.path.join(TEST_DIR, jpg)
             boxes = infer_img(yolo, img_path)
             f.write('{},'.format(os.path.splitext(jpg)[0]))
@@ -62,6 +62,18 @@ def submit_test_imgs(yolo):
                 f.write(' '.join(box_strings))
             f.write('\n')
     yolo.close_session()
+
+
+def detect_single_img(yolo, img_path):
+    detect_img(yolo, img_path)
+    boxes = infer_img(yolo, img_path)
+    print('ImageId,PredictionString\n')
+    print('{},'.format(img_path))
+    # 1 record: [label, confidence, x_min, y_min, x_max, y_max]
+    box_strings = ['{:s} {:.5f} {:.5f} {:.5f} {:.5f} {:.5f}'.format(b[0], b[1], b[2], b[3], b[4], b[5]) for b in boxes]
+    if box_strings:
+        print(' '.join(box_strings))
+    print('\n')
 
 
 if __name__ == '__main__':
@@ -95,11 +107,18 @@ if __name__ == '__main__':
         help='submit mode, to generate "output.csv" for Kaggle submission'
     )
 
+    parser.add_argument(
+        '--image', default="", action='store', type=str, help='single image path')
+
+
     FLAGS = parser.parse_args()
 
     if FLAGS.display:
         print("Display mode")
-        detect_test_imgs(YOLO(**vars(FLAGS)))
+        if (FLAGS.image is not None) and (FLAGS.image != ""):
+            detect_single_img(YOLO(**vars(FLAGS)), FLAGS.image)
+        else:
+            detect_test_imgs(YOLO(**vars(FLAGS)))
     elif FLAGS.submit:
         print("Submit mode: writing to output.csv")
         submit_test_imgs(YOLO(**vars(FLAGS)))

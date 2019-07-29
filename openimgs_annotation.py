@@ -48,12 +48,14 @@ def main():
     #                'x0': 0.760000, 'x1': 0.778125,
     #                'y0': 0.645892, 'y1': 0.673277}]
 
-    with open('kaggle_2019_train_260k_256x256.txt', 'w') as f:
+    #with open('kaggle_2019_train_260k_256x256.txt', 'w') as f:
     #with open('kaggle_2019_train_60k_256x256.txt', 'w') as f:
+    with open('kaggle_2019_train_test.txt', 'w') as f:
 
         def write_line(img_id, img_annos):
-            img_path = 'open-image-dataset/train/{}.jpg'.format(img_id)
+            #img_path = 'open-image-dataset/train/{}.jpg'.format(img_id)
             #img_path = 'open-image-dataset/train_min/{}.jpg'.format(img_id)
+            img_path = 'open-image-dataset/test/{}.jpg'.format(img_id)
             img_path = os.path.abspath(img_path)
             
             if not os.path.isfile(img_path): 
